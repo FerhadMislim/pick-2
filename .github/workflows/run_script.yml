@@ -27,11 +27,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt  
 
-    # empty the csv file
-    - name: Empty CSV file
-      run: |
-        echo "" > lottery_results.csv
-
     - name: Run Python script
       run: python scraper.py ${{ github.event.inputs.year }} 
     
@@ -39,6 +34,7 @@ jobs:
       run: |
         git config --global user.email "<>"
         git config --global user.name "github-bot"
+        git checkout -b data-${{ github.event.inputs.year }}
         git add .
         git commit -m "Update CSV for year ${{ github.event.inputs.year }} "
         git push
