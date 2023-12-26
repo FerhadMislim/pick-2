@@ -21,7 +21,7 @@ def scrape_and_save_lottery_results(year, day_time, csv_filename):
         columns = row.find_all("td")
         date = columns[0].get_text(strip=True)
         numbers = [li.get_text(strip=True) for li in columns[1].find_all("li")]
-        data.append([date, day_time] + numbers)
+        data.append([date, day_time.capitalize()] + numbers)
 
     # Save data to CSV file
     with open(csv_filename, mode="a", newline="") as csvfile:  # Use "a" to append to the existing file
