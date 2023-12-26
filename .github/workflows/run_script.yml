@@ -7,7 +7,8 @@ on:
         description: 'Year for the script'
         required: true
         default: '2023'
-
+permissions:
+  contents: write
 jobs:
   run_script:
     runs-on: ubuntu-latest
@@ -26,12 +27,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt  
 
-    - name: Run Python script
-      run: python scraper.py ${{ github.event.inputs.year }} 
+    # - name: Run Python script
+    #   run: python scraper.py ${{ github.event.inputs.year }} 
 
+    - name: Run Python script
+      run: |
+        touch data.csv
+        date %Y-%m-%d > data.csv
+        git status
     - name: Commit and push changes
       run: |
-        git config --global user.email "g"
+        git config --global user.email "<>"
         git config --global user.name "github-actions-bot"
         git add .
         git commit -m "Update CSV for year ${{ github.event.inputs.year }} "
