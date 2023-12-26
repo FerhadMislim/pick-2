@@ -49,6 +49,8 @@ scrape_and_save_lottery_results(year, day_time, csv_filename)
 # sort the csv file by date
 
 df = pd.read_csv(csv_filename)
+# convert the Date column to date format
+df['Date'] = pd.to_datetime(df['Date'])
 df.sort_values(by=['Date'], inplace=True)
 df.to_csv(csv_filename, index=False)
 print("CSV file has been sorted by date")
