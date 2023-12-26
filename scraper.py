@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd
 import csv
 import sys
 
@@ -35,8 +36,20 @@ args = sys.argv
 year = args[1]
 day_time = "midday"
 csv_filename = f"lottery_results_{year}.csv"
+# create the csv file with header
+with open(csv_filename, mode="w", newline="") as csvfile:
+    csv_writer = csv.writer(csvfile)
+    csv_writer.writerow(["Date", "Time", "Number1", "Number2"])
 scrape_and_save_lottery_results(year, day_time, csv_filename)
 
 # Example usage for evening results in 2020
 day_time = "evening"
 scrape_and_save_lottery_results(year, day_time, csv_filename)
+
+# sort the csv file by date
+
+df = pd.read_csv(csv_filename)
+df.sort_values(by=['Date'], inplace=True)
+df.to_csv(csv_filename, index=False)
+print("CSV file has been sorted by date")
+
