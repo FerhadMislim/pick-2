@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import csv
+import sys
 
 def scrape_and_save_lottery_results(year, day_time, csv_filename):
     # Construct the URL
@@ -29,10 +30,11 @@ def scrape_and_save_lottery_results(year, day_time, csv_filename):
 
     print(f"Data has been appended to {csv_filename}")
 
-# Example usage for midday results in 2020
-year = 2020
+
+args = sys.argv
+year = args[1]
 day_time = "midday"
-csv_filename = "lottery_results.csv"
+csv_filename = f"lottery_results_{year}.csv"
 scrape_and_save_lottery_results(year, day_time, csv_filename)
 
 # Example usage for evening results in 2020
