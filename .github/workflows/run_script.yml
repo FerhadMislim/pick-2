@@ -33,7 +33,7 @@ jobs:
     - name: Run Python script
       run: |
         touch data.csv
-        date %Y-%m-%d > data.csv
+        date > data.csv
         git status
     - name: Commit and push changes
       run: |
