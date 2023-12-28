@@ -3,6 +3,10 @@ name: Run Python Script
 on:
   workflow_dispatch:
     inputs:
+      all:
+        description: 'Run script for all years'
+        required: false
+        default: 'false'
       year:
         description: 'Year for the script'
         required: true
@@ -26,15 +30,29 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt  
-
-    - name: Run Python script
-      run: python scraper.py ${{ github.event.inputs.year }} 
+        
+    # run scaper.py if all is false otherwise run scraper_all.py
+    - name: Run scraper
+      run: |
+        if [ "${{ github.event.inputs.all }}" = "false" ]; then
+          python scraper.py ${{ github.event.inputs.year }}
+        else
+          python scraper_all.py
+        fi
     
+    # commit and push changes to the branch data-${{ github.event.inputs.year }} if all is false otherwise commit and push to data-all
     - name: Commit and push changes
       run: |
         git config --global user.email "<>"
         git config --global user.name "github-bot"
-        git checkout -b data-${{ github.event.inputs.year }}
-        git add .
-        git commit -m "Update CSV for year ${{ github.event.inputs.year }} "
-        git push origin data-${{ github.event.inputs.year }}
+        if [ "${{ github.event.inputs.all }}" = "false" ]; then
+          git checkout -b data-${{ github.event.inputs.year }}
+          git add .
+          git commit -m "Update CSV for year ${{ github.event.inputs.year }} "
+          git push origin data-${{ github.event.inputs.year }}
+        else
+          git checkout -b data-all
+          git add .
+          git commit -m "Update CSV for all years"
+          git push origin data-all
+        fi
