@@ -105,4 +105,5 @@ if __name__ == '__main__':
     single_year = '--single-year' in sys.argv
     year = int(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1].isdigit() else 2022
     results = scrape_pick2_ontario(start_year=year, single_year=single_year)
-    save_to_csv(results)
+    year_str = f"_{year}" if single_year else f"_{year}_to_{datetime.now().year}"
+    save_to_csv(results, filename=f'ontario_pick2_results{year_str}.csv')
