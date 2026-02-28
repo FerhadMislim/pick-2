@@ -10,7 +10,8 @@ on:
       single_year:
         description: 'Scrape only single year'
         required: false
-        default: 'true'
+        type: boolean
+        default: true
 permissions:
   contents: write
 jobs:
